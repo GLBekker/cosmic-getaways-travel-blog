@@ -1,0 +1,27 @@
+{
+  "name": "cosmic-getaways-travel-blog",
+  "version": "1.0.0",
+  "description": "A responsive, modern travel blog featuring AI-generated destination imagery and interactive carousel",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "npx http-server -p 5173 -o",
+    "build": "echo 'Static site - no build needed' && echo 'Optimize images and assets manually'",
+    "preview": "npx http-server -p 8080",
+    "test": "echo 'Run manual testing via browser' && echo 'See README.md for testing procedures'",
+    "lint": "echo 'Code quality checks'"
+  },
+  "keywords": [
+    "travel",
+    "blog",
+    "responsive",
+    "accessibility",
+    "space-themed",
+    "carousel",
+    "destinations"
+  ],
+  "author": "Cosmic Getaways Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
