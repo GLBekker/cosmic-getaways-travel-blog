@@ -1,10 +1,10 @@
 # CLAUDE.md
 
 ## Instance Configuration
-- **Instance Name**: AI Travel Blog
-- **Instance Role**: AI Travel Blog Root
+- **Instance Name**: AI Travels
+- **Instance Role**: AI Travel Root
 - **Branch**: main
-- **Instance ID**: instance_1760831561086
+- **Instance ID**: instance_1760969774294
 
 ## System Prompt
 
@@ -35,4 +35,4 @@ C:\workspace\DEMOS\AITravels
 
 ## Instance Metadata
 This file is automatically managed by Echorb and will be updated when the instance starts.
-Last updated: 2025-10-19T02:32:14.559517
+Last updated: 2025-10-20T16:16:19.831257
