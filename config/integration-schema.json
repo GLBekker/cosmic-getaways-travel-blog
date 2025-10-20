@@ -1,0 +1,51 @@
+{
+  "contentSchema": {
+    "version": "1.0",
+    "contentTypes": {
+      "destination": {
+        "fields": {
+          "id": "string (unique identifier)",
+          "title": "string (destination name)",
+          "description": "string (short description, max 500 chars)",
+          "longDescription": "string (detailed description, max 2000 chars)",
+          "imageId": "string (reference to image asset)",
+          "category": "string (planet/moon/station/etc)",
+          "rating": "number (1-5 stars)",
+          "bestTime": "string (seasonal info)",
+          "highlights": "array of strings (key attractions)",
+          "tags": "array of strings (search tags)"
+        },
+        "required": ["id", "title", "description", "imageId", "category"]
+      }
+    }
+  },
+  "imageSchema": {
+    "version": "1.0",
+    "imageTypes": {
+      "destination": {
+        "dimensions": "1200x800px (landscape)",
+        "format": "WebP or PNG",
+        "quality": "90% compression",
+        "namingConvention": "destination-{id}-{variant}.ext",
+        "variants": ["hero", "thumbnail", "mobile"]
+      }
+    }
+  },
+  "integrationHandoff": {
+    "contentCreator": {
+      "deliverables": ["destination metadata", "descriptions", "highlights"],
+      "format": "JSON or CSV",
+      "deadline": "Phase 1: 48 hours"
+    },
+    "imageGenerator": {
+      "deliverables": ["destination hero images", "thumbnails", "mobile variants"],
+      "format": "WebP (primary), PNG (fallback)",
+      "deadline": "Phase 1: 48 hours"
+    },
+    "frontendDeveloper": {
+      "inputs": ["content JSON", "image assets"],
+      "outputs": ["responsive UI components", "integrated pages"],
+      "deadline": "Phase 2: 48-72 hours post-content"
+    }
+  }
+}
