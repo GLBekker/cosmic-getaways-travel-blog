@@ -394,6 +394,74 @@ function attachKeyboardNavigation() {
     });
 }
 
+function openDestinationModal(destId) {
+    const destination = destinationsData.find(d => d.id === destId);
+    if (!destination) return;
+
+    let modal = document.getElementById('destination-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'destination-modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <button class="modal-close" aria-label="Close modal">✕</button>
+                <div class="modal-body"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeDestinationModal();
+        });
+
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeDestinationModal);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeDestinationModal();
+            }
+        });
+    }
+
+    const modalBody = modal.querySelector('.modal-body');
+    modalBody.innerHTML = `
+        <div class="modal-header">
+            <img src="assets/${destination.imageHero}" alt="${destination.title}" class="modal-image">
+        </div>
+        <div class="modal-info">
+            <h2>${destination.title}</h2>
+            <p class="modal-category">${destination.category}</p>
+            <div class="modal-meta">
+                <span class="modal-location">📍 ${destination.location}</span>
+                <span class="modal-rating">⭐ ${destination.rating}/5</span>
+            </div>
+            <p class="modal-description">${destination.longDescription}</p>
+            <h3>Highlights</h3>
+            <ul class="modal-highlights">
+                ${destination.highlights.map(h => `<li>${h}</li>`).join('')}
+            </ul>
+            <div class="modal-tags">
+                ${destination.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDestinationModal() {
+    const modal = document.getElementById('destination-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
 function attachCardEventListeners() {
     const cards = document.querySelectorAll('.destination-card');
     cards.forEach((card) => {
@@ -409,16 +477,8 @@ function attachCardEventListeners() {
         if (readMoreBtn) {
             readMoreBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                const href = this.getAttribute('href');
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    card.style.borderColor = 'rgba(124, 58, 237, 0.8)';
-                    setTimeout(() => {
-                        card.style.borderColor = 'rgba(124, 58, 237, 0.3)';
-                    }, 2000);
-                }
+                const cardId = card.getAttribute('id');
+                openDestinationModal(cardId);
             });
         }
     });
