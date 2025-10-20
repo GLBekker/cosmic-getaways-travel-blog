@@ -1,10 +1,70 @@
 // ================================
+// CONTENT LOADING & RENDERING
+// ================================
+
+let destinationsData = [];
+
+async function loadContent() {
+    try {
+        const response = await fetch('assets/data/content.json');
+        const data = await response.json();
+        destinationsData = data.destinations;
+        renderDestinations();
+        populateNavigation();
+    } catch (error) {
+        console.error('Error loading content:', error);
+    }
+}
+
+function renderDestinations() {
+    const container = document.getElementById('destinations-container');
+    if (!container || !destinationsData.length) return;
+
+    container.innerHTML = destinationsData.map((dest) => `
+        <article id="${dest.id}" class="destination-card" role="article">
+            <div class="card-image">
+                <img src="assets/images/${dest.image}" alt="${dest.name} - ${dest.description}">
+            </div>
+            <div class="card-content">
+                <h3>${dest.name}</h3>
+                <p class="destination-type">${dest.type}</p>
+                <p class="description">${dest.description}</p>
+                <div class="card-meta">
+                    <span class="location">${dest.location}</span>
+                    <span class="rating">${dest.rating}</span>
+                </div>
+                <a href="#${dest.id}" class="read-more">Discover More →</a>
+            </div>
+        </article>
+    `).join('');
+
+    // Re-observe cards after rendering
+    const cards = document.querySelectorAll('.destination-card');
+    cards.forEach((card) => observer.observe(card));
+
+    // Re-attach card event listeners
+    attachCardEventListeners();
+}
+
+function populateNavigation() {
+    const navContainer = document.getElementById('nav-destinations');
+    if (!navContainer || !destinationsData.length) return;
+
+    navContainer.innerHTML = destinationsData.map((dest) => `
+        <li><a href="#${dest.id}">${dest.name}</a></li>
+    `).join('');
+
+    // Re-attach nav event listeners
+    attachNavEventListeners();
+}
+
+// ================================
 // SMOOTH SCROLLING & NAVIGATION
 // ================================
 
 // Update active navigation link on scroll
-const navLinks = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section, header');
+let navLinks = document.querySelectorAll('.nav-links a');
+let sections = document.querySelectorAll('section, header');
 
 function updateActiveNav() {
     let currentSection = '';
@@ -72,68 +132,8 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// ================================
-// SMOOTH SCROLL IMPLEMENTATION
-// ================================
-
-// Enhanced smooth scroll for CTA button and nav links
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-
-        // Skip if href is just '#'
-        if (href === '#') {
-            e.preventDefault();
-            return;
-        }
-
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-            e.preventDefault();
-
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
-        }
-    });
-});
-
-// ================================
-// CARD HOVER EFFECTS & INTERACTIONS
-// ================================
-
-const cards = document.querySelectorAll('.destination-card');
-
-cards.forEach((card) => {
-    // Add hover scale effect
-    card.addEventListener('mouseenter', function () {
-        this.style.zIndex = '10';
-    });
-
-    card.addEventListener('mouseleave', function () {
-        this.style.zIndex = '1';
-    });
-
-    // Add click interaction for read more
-    const readMoreBtn = card.querySelector('.read-more');
-    if (readMoreBtn) {
-        readMoreBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            card.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-            // Add visual feedback
-            card.style.borderColor = 'rgba(124, 58, 237, 0.8)';
-            setTimeout(() => {
-                card.style.borderColor = 'rgba(124, 58, 237, 0.3)';
-            }, 2000);
-        });
-    }
-});
+// Note: Smooth scroll and card interactions are now handled dynamically
+// See: renderDestinations(), populateNavigation(), attachNavEventListeners(), attachCardEventListeners()
 
 // ================================
 // LAZY LOADING FOR IMAGES
@@ -236,9 +236,60 @@ window.addEventListener('scroll', throttledScroll);
 // INITIALIZATION
 // ================================
 
+function attachNavEventListeners() {
+    navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href !== '#') {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+    updateActiveNav();
+}
+
+function attachCardEventListeners() {
+    const cards = document.querySelectorAll('.destination-card');
+    cards.forEach((card) => {
+        card.addEventListener('mouseenter', function () {
+            this.style.zIndex = '10';
+        });
+
+        card.addEventListener('mouseleave', function () {
+            this.style.zIndex = '1';
+        });
+
+        const readMoreBtn = card.querySelector('.read-more');
+        if (readMoreBtn) {
+            readMoreBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.style.borderColor = 'rgba(124, 58, 237, 0.8)';
+                    setTimeout(() => {
+                        card.style.borderColor = 'rgba(124, 58, 237, 0.3)';
+                    }, 2000);
+                }
+            });
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Cosmic Getaways loaded successfully!');
     adjustStarfieldForDevice();
+
+    // Load content from JSON
+    loadContent();
 
     // Add entrance animation to hero
     const hero = document.querySelector('.hero');

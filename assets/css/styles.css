@@ -214,7 +214,8 @@ body {
 }
 
 /* Destinations Grid - Mobile-first Responsive */
-.destinations .container {
+.destinations .container,
+.destinations-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 3rem;

@@ -1,0 +1,49 @@
+{
+  "destinations": [
+    {
+      "id": "luminara-tides",
+      "name": "Luminara Tides",
+      "type": "Tropical Paradise",
+      "description": "Immerse yourself in bioluminescent waters where marine life glows with ethereal light. This enchanting ocean world offers pristine beaches and cosmic-inspired tranquility beneath twin moons.",
+      "location": "📍 Outer Rim Shores",
+      "rating": "⭐ 4.9/5",
+      "image": "bioluminescent_ocean_world_hero.png"
+    },
+    {
+      "id": "crystalline-canyons",
+      "name": "Crystalline Canyons",
+      "type": "Geological Wonder",
+      "description": "Venture through stunning crystal formations that catch and refract light into a thousand colors. Explore ancient geological formations and experience the majesty of crystalline landscapes.",
+      "location": "📍 Mineral Ridge",
+      "rating": "⭐ 4.8/5",
+      "image": "crystal_canyon_planet_hero.png"
+    },
+    {
+      "id": "nebula-nexus",
+      "name": "Nebula Nexus Station",
+      "type": "Space Station Resort",
+      "description": "Experience luxury at the edge of known space. This orbital station offers unparalleled views of swirling nebula clouds and serves as the ultimate destination for cosmic adventurers.",
+      "location": "📍 Nebula Sector",
+      "rating": "⭐ 4.9/5",
+      "image": "nebula_resort_station_hero.png"
+    },
+    {
+      "id": "aurora-peak",
+      "name": "Aurora Peak Paradise",
+      "type": "Arctic Adventure",
+      "description": "Witness the mesmerizing dance of auroras above ice-capped peaks. A winter wonderland where the sky blazes with cosmic colors and pristine snow blankets the landscape.",
+      "location": "📍 Polar Regions",
+      "rating": "⭐ 4.8/5",
+      "image": "ice_planet_aurora_hero.png"
+    },
+    {
+      "id": "verdant-moon",
+      "name": "Verdant Moon Sanctuary",
+      "type": "Nature Sanctuary",
+      "description": "Discover lush jungle valleys blessed with bioluminescent flora and pristine ecosystems. A haven for nature lovers and wildlife enthusiasts seeking connection with thriving alien biospheres.",
+      "location": "📍 Moon Prime",
+      "rating": "⭐ 4.8/5",
+      "image": "jungle_moon_hero.png"
+    }
+  ]
+}
