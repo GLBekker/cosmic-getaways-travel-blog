@@ -36,7 +36,7 @@ function renderDestinations() {
         >
             <div class="card-image">
                 <img
-                    src="assets/images/${dest.imageHero}"
+                    src="assets/${dest.imageHero}"
                     alt="${dest.title} - ${dest.description}"
                     loading="lazy"
                     decoding="async"
