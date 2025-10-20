@@ -1,8 +1,13 @@
 // ================================
-// CONTENT LOADING & RENDERING
+// CONTENT LOADING & CAROUSEL STATE
 // ================================
 
 let destinationsData = [];
+let carouselState = {
+    currentIndex: 0,
+    isAutoPlay: false,
+    autoPlayInterval: null
+};
 
 async function loadContent() {
     try {
@@ -11,6 +16,7 @@ async function loadContent() {
         destinationsData = data.destinations;
         renderDestinations();
         populateNavigation();
+        initializeCarousel();
     } catch (error) {
         console.error('Error loading content:', error);
     }
@@ -20,18 +26,32 @@ function renderDestinations() {
     const container = document.getElementById('destinations-container');
     if (!container || !destinationsData.length) return;
 
-    container.innerHTML = destinationsData.map((dest) => `
-        <article id="${dest.id}" class="destination-card" role="article">
+    container.innerHTML = destinationsData.map((dest, idx) => `
+        <article
+            id="${dest.id}"
+            class="destination-card"
+            role="article"
+            data-index="${idx}"
+            aria-label="Destination ${idx + 1} of ${destinationsData.length}: ${dest.title}"
+        >
             <div class="card-image">
-                <img src="assets/images/${dest.image}" alt="${dest.name} - ${dest.description}">
+                <img
+                    src="assets/images/${dest.imageHero}"
+                    alt="${dest.title} - ${dest.description}"
+                    loading="lazy"
+                    decoding="async"
+                >
             </div>
             <div class="card-content">
-                <h3>${dest.name}</h3>
-                <p class="destination-type">${dest.type}</p>
+                <h3>${dest.title}</h3>
+                <p class="destination-type">${dest.category}</p>
                 <p class="description">${dest.description}</p>
+                <ul class="highlights-list" aria-label="Highlights">
+                    ${dest.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}
+                </ul>
                 <div class="card-meta">
-                    <span class="location">${dest.location}</span>
-                    <span class="rating">${dest.rating}</span>
+                    <span class="location">📍 ${dest.location}</span>
+                    <span class="rating">⭐ ${dest.rating}/5</span>
                 </div>
                 <a href="#${dest.id}" class="read-more">Discover More →</a>
             </div>
@@ -51,11 +71,97 @@ function populateNavigation() {
     if (!navContainer || !destinationsData.length) return;
 
     navContainer.innerHTML = destinationsData.map((dest) => `
-        <li><a href="#${dest.id}">${dest.name}</a></li>
+        <li><a href="#${dest.id}">${dest.title}</a></li>
     `).join('');
 
     // Re-attach nav event listeners
     attachNavEventListeners();
+}
+
+// ================================
+// CAROUSEL INITIALIZATION & CONTROL
+// ================================
+
+function initializeCarousel() {
+    createCarouselControls();
+    createPaginationDots();
+    updateCarouselDisplay();
+    attachCarouselEventListeners();
+    attachKeyboardNavigation();
+}
+
+function createCarouselControls() {
+    const container = document.getElementById('destinations-container');
+    if (!container) return;
+
+    const controlsHTML = `
+        <div class="carousel-controls" role="group" aria-label="Carousel controls">
+            <button
+                class="carousel-btn carousel-prev"
+                aria-label="Previous destination"
+                title="Previous (← arrow key)"
+            >
+                <span>❮</span>
+            </button>
+            <button
+                class="carousel-btn carousel-next"
+                aria-label="Next destination"
+                title="Next (→ arrow key)"
+            >
+                <span>❯</span>
+            </button>
+        </div>
+    `;
+    container.insertAdjacentHTML('afterend', controlsHTML);
+}
+
+function createPaginationDots() {
+    const container = document.getElementById('destinations-container');
+    if (!container) return;
+
+    const dotsHTML = `
+        <div class="carousel-pagination" role="tablist" aria-label="Destination selector">
+            ${destinationsData.map((_, idx) => `
+                <button
+                    class="pagination-dot ${idx === 0 ? 'active' : ''}"
+                    data-index="${idx}"
+                    role="tab"
+                    aria-label="Go to destination ${idx + 1}"
+                    aria-selected="${idx === 0}"
+                    title="Destination ${idx + 1}"
+                ></button>
+            `).join('')}
+        </div>
+    `;
+    container.insertAdjacentHTML('afterend', dotsHTML);
+}
+
+function updateCarouselDisplay() {
+    const cards = document.querySelectorAll('.destination-card');
+    cards.forEach((card, idx) => {
+        card.classList.toggle('active', idx === carouselState.currentIndex);
+        card.setAttribute('aria-hidden', idx !== carouselState.currentIndex);
+    });
+
+    // Update pagination dots
+    const dots = document.querySelectorAll('.pagination-dot');
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === carouselState.currentIndex);
+        dot.setAttribute('aria-selected', idx === carouselState.currentIndex);
+    });
+}
+
+function slideToIndex(index) {
+    carouselState.currentIndex = (index + destinationsData.length) % destinationsData.length;
+    updateCarouselDisplay();
+}
+
+function nextSlide() {
+    slideToIndex(carouselState.currentIndex + 1);
+}
+
+function prevSlide() {
+    slideToIndex(carouselState.currentIndex - 1);
 }
 
 // ================================
@@ -252,6 +358,40 @@ function attachNavEventListeners() {
         });
     });
     updateActiveNav();
+}
+
+function attachCarouselEventListeners() {
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const dots = document.querySelectorAll('.pagination-dot');
+
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+    dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+            const index = parseInt(dot.getAttribute('data-index'), 10);
+            slideToIndex(index);
+        });
+    });
+}
+
+function attachKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'Enter') {
+            const activeCard = document.querySelector('.destination-card.active');
+            if (activeCard) {
+                const readMoreBtn = activeCard.querySelector('.read-more');
+                if (readMoreBtn) readMoreBtn.click();
+            }
+        }
+    });
 }
 
 function attachCardEventListeners() {

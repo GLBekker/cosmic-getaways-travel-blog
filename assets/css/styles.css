@@ -406,27 +406,164 @@ body {
 }
 
 /* ================================
+   CAROUSEL STYLES
+   ================================ */
+
+.destination-card {
+    display: none;
+}
+
+.destination-card.active {
+    display: flex;
+}
+
+/* Carousel Controls */
+.carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-controls:hover {
+    opacity: 1;
+}
+
+.carousel-btn {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.carousel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+}
+
+.carousel-btn:active {
+    transform: translateY(0);
+}
+
+.carousel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Pagination Dots */
+.carousel-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.pagination-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-cyan);
+    background: transparent;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.pagination-dot:hover {
+    background: rgba(6, 182, 212, 0.3);
+    transform: scale(1.2);
+}
+
+.pagination-dot.active {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+
+/* Highlights List */
+.highlights-list {
+    list-style: none;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.highlights-list li {
+    padding: 0.25rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.highlights-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-weight: bold;
+}
+
+/* ================================
    RESPONSIVE DESIGN
    ================================ */
 
-/* Tablet (768px and up) */
+/* Mobile/Carousel Mode (max 768px) */
+@media (max-width: 768px) {
+    .carousel-controls {
+        display: flex;
+        opacity: 1;
+    }
+
+    .carousel-pagination {
+        display: flex;
+    }
+
+    .destination-card {
+        display: none;
+    }
+
+    .destination-card.active {
+        display: flex;
+    }
+}
+
+/* Tablet (768px and up) - Show 2 items */
 @media (min-width: 768px) {
     .nav-links {
         gap: 1.5rem;
     }
 
-    .destinations .container {
+    .carousel-controls {
+        opacity: 0.5;
+    }
+
+    .destinations .container,
+    .destinations-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
     .card-image {
         height: 250px;
     }
+
+    .destination-card {
+        display: flex;
+    }
+
+    .destination-card.active {
+        display: flex;
+    }
 }
 
-/* Desktop (1024px and up) */
+/* Desktop (1024px and up) - Show 3 items */
 @media (min-width: 1024px) {
-    .destinations .container {
+    .destinations .container,
+    .destinations-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 2rem;
     }
@@ -437,6 +574,15 @@ body {
 
     .destination-card {
         flex-direction: column;
+        display: flex;
+    }
+
+    .carousel-controls {
+        display: none;
+    }
+
+    .carousel-pagination {
+        display: none;
     }
 
     .about .container {
@@ -451,15 +597,25 @@ body {
     }
 }
 
-/* Large Desktop (1440px and up) */
+/* Large Desktop (1440px and up) - Show 4 items */
 @media (min-width: 1440px) {
-    .destinations .container {
-        grid-template-columns: repeat(5, 1fr);
+    .destinations .container,
+    .destinations-grid {
+        grid-template-columns: repeat(4, 1fr);
         gap: 1.5rem;
     }
 
     .card-image {
         height: 250px;
+    }
+}
+
+/* Extra Large Desktop (1920px and up) - Show all 5 items */
+@media (min-width: 1920px) {
+    .destinations .container,
+    .destinations-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
     }
 }
 
