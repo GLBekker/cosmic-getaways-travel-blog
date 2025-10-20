@@ -1,0 +1,127 @@
+{
+  "carouselSchema": {
+    "version": "1.0",
+    "type": "destination-carousel",
+    "structure": {
+      "container": {
+        "className": "destination-carousel",
+        "attributes": {
+          "role": "region",
+          "ariaLabel": "Featured Destinations"
+        }
+      },
+      "items": {
+        "itemCount": 5,
+        "itemType": "destination-card"
+      }
+    },
+    "destinationCard": {
+      "fields": {
+        "id": "string (unique ID)",
+        "title": "string",
+        "description": "string (short)",
+        "longDescription": "string (full content)",
+        "imageHero": "string (path to 1200x800 hero image)",
+        "imageThumbnail": "string (path to thumbnail)",
+        "imageMobile": "string (path to mobile variant 375px)",
+        "category": "string",
+        "rating": "number (1-5)",
+        "highlights": "array of strings",
+        "tags": "array of strings"
+      },
+      "responsive": {
+        "desktop": {
+          "breakpoint": "1920px+",
+          "image": "imageMobile",
+          "layout": "grid-4-columns"
+        },
+        "tablet": {
+          "breakpoint": "1024px",
+          "image": "imageThumbnail",
+          "layout": "grid-2-columns"
+        },
+        "mobile": {
+          "breakpoint": "768px",
+          "image": "imageMobile",
+          "layout": "grid-1-column"
+        },
+        "small-mobile": {
+          "breakpoint": "375px",
+          "image": "imageMobile",
+          "layout": "carousel-swipe"
+        }
+      },
+      "interactions": {
+        "hover": {
+          "effect": "elevation-lift",
+          "duration": "200ms"
+        },
+        "click": {
+          "action": "navigate-detail-page",
+          "transition": "fade"
+        },
+        "touch": {
+          "action": "swipe-next-destination",
+          "gesture": "horizontal-swipe"
+        }
+      }
+    },
+    "navigationControls": {
+      "prevButton": {
+        "ariaLabel": "Previous Destination",
+        "icon": "chevron-left",
+        "disabled": "when on first item"
+      },
+      "nextButton": {
+        "ariaLabel": "Next Destination",
+        "icon": "chevron-right",
+        "disabled": "when on last item"
+      },
+      "pagination": {
+        "dots": true,
+        "currentIndicator": true
+      }
+    },
+    "accessibility": {
+      "keyboardNavigation": {
+        "left-arrow": "Previous item",
+        "right-arrow": "Next item",
+        "enter": "Select item",
+        "escape": "Close detail view"
+      },
+      "screenReaderSupport": {
+        "ariaLive": "polite",
+        "announcements": "Item X of Y: [Title]"
+      },
+      "focusManagement": "Visible focus indicator on all interactive elements"
+    },
+    "performance": {
+      "imageOptimization": {
+        "format": "WebP (primary) + PNG (fallback)",
+        "sizes": {
+          "hero": "1200x800px (max 150KB)",
+          "thumbnail": "400x300px (max 50KB)",
+          "mobile": "375x280px (max 40KB)"
+        },
+        "lazyLoading": true,
+        "preload": "Next 2 items in queue"
+      },
+      "renderOptimization": {
+        "virtualization": "Render 3 items in viewport + 1 off-screen",
+        "caching": "Component state memoization"
+      }
+    },
+    "dataBinding": {
+      "source": "content.json from content_creator",
+      "mapping": {
+        "destinations[].id": "destination.id",
+        "destinations[].title": "destination.title",
+        "destinations[].description": "destination.description",
+        "destinations[].longDescription": "destination.longDescription",
+        "destinations[].imageId": "map to /assets/images/destination-{imageId}-hero.webp",
+        "destinations[].highlights": "destination.highlights",
+        "destinations[].rating": "destination.rating"
+      }
+    }
+  }
+}
