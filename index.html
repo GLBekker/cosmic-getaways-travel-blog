@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cosmic Getaways - Explore the Universe of Travel Destinations">
+    <title>Cosmic Getaways - Universal Travel Blog</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Cosmic Getaways</h1>
+                <p class="tagline">Explore. Dream. Travel.</p>
+            </div>
+            <ul class="nav-links" id="nav-destinations">
+                <!-- Dynamically populated from content.json -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home" role="banner">
+        <div class="starfield"></div>
+        <div class="hero-content">
+            <h2>Welcome to Cosmic Getaways</h2>
+            <p>Journey through Earth's most breathtaking destinations</p>
+            <a href="#destinations" class="cta-button" aria-label="Scroll to destinations">Explore Now</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main role="main">
+        <!-- Destinations Section -->
+        <section id="destinations" class="destinations">
+            <div class="container">
+                <h2 class="section-title">Featured Destinations</h2>
+
+                <!-- Destination Cards Container - Populated by JavaScript -->
+                <div id="destinations-container" class="destinations-grid">
+                    <!-- Cards generated from content.json -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" role="contentinfo" aria-label="About section">
+            <div class="container">
+                <h2>About Cosmic Getaways</h2>
+                <p>We believe every journey is a cosmic adventure. Our mission is to inspire wanderlust and connect travelers with the world's most magical destinations.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Cosmic Getaways</h4>
+                    <p>Your gateway to extraordinary travel experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#destinations">Destinations</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cosmic Getaways. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
